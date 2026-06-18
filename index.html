@@ -318,15 +318,16 @@
   </div>
 
   <script>
-    // Elements Cache Global Reference Handles
-    let navInput, scratchInput, mainCanvas, statusField, tsvSignature, workspaceTitle, infoModal;
+    // Explicit Global Variables
+    let navInput, scratchInput, mainCanvasInput, statusField, tsvSignature, workspaceTitle, infoModal;
     const STORAGE_KEY_PREFIX = 'stx_tsv_sheet_';
     let currentActiveSheet = 'ALPHA';
 
+    // Core Initialization
     window.addEventListener('DOMContentLoaded', () => {
       navInput = document.getElementById('nav-input');
       scratchInput = document.getElementById('scratch-input');
-      mainCanvas = document.getElementById('main-canvas-input');
+      mainCanvasInput = document.getElementById('main-canvas-input');
       statusField = document.getElementById('status-field');
       tsvSignature = document.getElementById('footer-tsv-signature');
       workspaceTitle = document.getElementById('workspace-title');
@@ -340,11 +341,11 @@
     }
 
     function saveActiveSheetContext() {
-      if(!navInput) return;
+      if(!navInput || !mainCanvasInput) return;
       const payload = {
         nav: navInput.value,
         scratch: scratchInput.value,
-        canvas: mainCanvas.value,
+        canvas: mainCanvasInput.value,
         updatedAt: Date.now()
       };
       localStorage.setItem(STORAGE_KEY_PREFIX + currentActiveSheet, JSON.stringify(payload));
@@ -361,19 +362,19 @@
         const parsed = JSON.parse(cached);
         if(navInput) navInput.value = parsed.nav || '';
         if(scratchInput) scratchInput.value = parsed.scratch || '';
-        if(mainCanvas) mainCanvas.value = parsed.canvas || '';
+        if(mainCanvasInput) mainCanvasInput.value = parsed.canvas || '';
         if(statusField) statusField.textContent = `Hydrated worksheet nodes for [${sheetName}]. ✅`;
       } else {
         if(navInput) navInput.value = '';
         if(scratchInput) scratchInput.value = '';
-        if(mainCanvas) mainCanvas.value = '';
+        if(mainCanvasInput) mainCanvasInput.value = '';
         if(statusField) statusField.textContent = `Initialized clean workspace buffer for [${sheetName}].`;
       }
     }
 
     function triggerInstance(instanceId) {
-      if(!mainCanvas) return;
-      mainCanvas.value += `\n[TRIGGERED_MODULE_INSTANCE_${instanceId.toUpperCase()}] :: Target validation stream bound to active workspace.`;
+      if(!mainCanvasInput) return;
+      mainCanvasInput.value += `\n[TRIGGERED_MODULE_INSTANCE_${instanceId.toUpperCase()}] :: Target validation stream bound to active workspace.`;
       if(statusField) statusField.textContent = `Appended context parameters for instance token: ${instanceId}`;
       saveActiveSheetContext();
     }
@@ -389,7 +390,7 @@
       if(confirm(`Flush memory for current schema sheet: ${currentActiveSheet}?`)) {
         if(navInput) navInput.value = '';
         if(scratchInput) scratchInput.value = '';
-        if(mainCanvas) mainCanvas.value = '';
+        if(mainCanvasInput) mainCanvasInput.value = '';
         localStorage.removeItem(STORAGE_KEY_PREFIX + currentActiveSheet);
         if(statusField) statusField.textContent = `Buffer wiped cleanly for sheet node [${currentActiveSheet}].`;
       }
