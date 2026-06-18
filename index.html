@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quick Launch — Split Tabs v0.2</title>
+  <title>Quick Launch — Split Tabs v0.2.1</title>
   <style>
     * {
       box-sizing: border-box;
@@ -19,7 +19,7 @@
       flex-direction: column;
       overflow: hidden;
     }
-    /* TOP BAR (ZONE A) */
+    /* ZONE A: HEADER TERMINAL */
     header {
       height: 56px;
       display: flex;
@@ -49,32 +49,56 @@
       font-weight: bold;
     }
     .launch button:hover { background: #252830; }
-    
-    /* TAB BAR */
-    .tabs {
-      display: flex;
-      overflow-x: auto;
-      border-bottom: 1px solid #333;
-      background: #121212;
-    }
-    .tab {
-      padding: 12px 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      border-right: 1px solid #222;
-      color: #457B9D;
-    }
-    .tab.active {
-      background: #20242d;
-      color: #00FF66;
-      border-bottom: 2px solid #00FF66;
-    }
 
-    /* WORKSPACE BODY (ZONE B) */
+    /* ROW SETTER TOOLBAR */
+    .row-setter {
+      background: #121212;
+      border-bottom: 1px solid #333;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      font-size: 11px;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #aaa;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 34px;
+      height: 20px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #333;
+      transition: .4s;
+      border: 1px solid #444;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 12px; width: 12px;
+      left: 3px; bottom: 3px;
+      background-color: #00FF66;
+      transition: .4s;
+    }
+    input:checked + .slider { background-color: #1d1f25; border-color: #00FF66; }
+    input:checked + .slider:before { transform: translateX(14px); }
+
+    /* ZONE B: BODY - NEW THREE-COLUMN GRID */
     .workspace {
       flex: 1;
       display: grid;
-      grid-template-columns: 280px 1fr 340px;
+      /* Refactored layout, wider side columns */
+      grid-template-columns: 360px 1fr 380px; 
       overflow: hidden;
     }
     .panel {
@@ -85,7 +109,7 @@
       gap: 12px;
     }
     .left { border-right: 1px solid #333; background: #0B0B0C; }
-    .main { background: #15171d; }
+    .main { background: #15171d; } /* Primary wide center canvas */
     .right { border-left: 1px solid #333; background: #0B0B0C; }
 
     /* METADATA CARDS */
@@ -119,7 +143,7 @@
       color: #00FF66;
     }
 
-    /* MATRIX GRID CONTROLLERS (I. II. III. SCHEMA) */
+    /* MATRIX GRID (I. II. III. SCHEMA) */
     .matrix-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -148,11 +172,9 @@
       fill: #00FF66;
       pointer-events: none;
     }
-    .matrix-item span {
-      pointer-events: none;
-    }
+    .matrix-item span { pointer-events: none; }
 
-    /* SYSTEM FOOTER (ZONE C) */
+    /* ZONE C: SYSTEM FOOTER RULER */
     footer {
       height: 36px;
       background: #0B0B0C;
@@ -165,7 +187,7 @@
       color: #457B9D;
     }
 
-    /* CORNER MODAL CONTAINER */
+    /* CORNER MODAL */
     .corner-modal {
       position: fixed;
       bottom: 45px;
@@ -187,10 +209,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    .modal-body {
-      padding: 10px;
-      color: #ddd;
-    }
+    .modal-body { padding: 10px; color: #ddd; }
     .corner-trigger {
       cursor: pointer;
       background: #20242d;
@@ -212,6 +231,17 @@
       <button onclick="saveActiveSheetContext()" style="background: #00FF66; color: #000;">SAVE STATES</button>
     </div>
   </header>
+
+  <div class="row-setter">
+    <div class="toggle-container">
+      <span>ROW SET</span>
+      <label class="switch">
+        <input type="checkbox" id="gridline-toggle" checked>
+        <span class="slider"></span>
+      </label>
+      <span style="color: #00FF66">GRIDLINE ELEMENT</span>
+    </div>
+  </div>
 
   <div class="tabs">
     <div class="tab active" data-sheet="ALPHA" onclick="switchTab(this)">ALPHA</div>
@@ -332,6 +362,16 @@
       tsvSignature = document.getElementById('footer-tsv-signature');
       workspaceTitle = document.getElementById('workspace-title');
       infoModal = document.getElementById('info-modal');
+
+      // Gridline toggle event listener
+      document.getElementById('gridline-toggle').addEventListener('change', (e) => {
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(ta => {
+          ta.style.borderStyle = e.target.checked ? 'dashed' : 'solid';
+          ta.style.borderColor = e.target.checked ? '#333' : 'rgba(0,255,102,0.1)';
+        });
+        statusField.textContent = `Gridline Element ${e.target.checked ? 'Enabled' : 'Disabled'}.`;
+      });
 
       loadSheetContext('ALPHA');
     });
