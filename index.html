@@ -1,344 +1,276 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
-
-<title>index.html</title>
-<style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-body{
-
-font-family:system-ui;
-
-height:100vh;
-
-background:#101114;
-
-color:#ddd;
-
-display:flex;
-
-flex-direction:column;
-
-}
-
-/* TOP BAR */
-
-header{
-
-height:56px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 16px;
-
-border-bottom:1px solid #333;
-
-}
-
-.brand{
-
-font-weight:700;
-
-}
-
-.launch{
-
-display:flex;
-
-gap:8px;
-
-}
-
-.launch button{
-
-padding:8px 12px;
-
-background:#1d1f25;
-
-border:1px solid #444;
-
-color:white;
-
-cursor:pointer;
-
-}
-
-/* TAB BAR */
-
-.tabs{
-
-display:flex;
-
-overflow:auto;
-
-border-bottom:1px solid #333;
-
-}
-
-.tab{
-
-padding:12px;
-
-cursor:pointer;
-
-white-space:nowrap;
-
-border-right:1px solid #222;
-
-}
-
-.tab.active{
-
-background:#20242d;
-
-}
-
-/* SPLIT */
-
-.workspace{
-
-flex:1;
-
-display:grid;
-
-grid-template-columns:
-260px
-1fr
-320px;
-
-overflow:hidden;
-
-}
-
-/* PANELS */
-
-.panel{
-
-overflow:auto;
-
-padding:16px;
-
-}
-
-.left{
-
-border-right:1px solid #333;
-
-}
-
-.main{
-
-background:#15171d;
-
-}
-
-.right{
-
-border-left:1px solid #333;
-
-}
-
-/* CARD */
-
-.card{
-
-padding:12px;
-
-margin-bottom:12px;
-
-border:1px solid #333;
-
-background:#181a20;
-
-}
-
-/* MOBILE */
-
-@media (max-width:900px){
-
-.workspace{
-
-grid-template-columns:
-1fr;
-
-grid-template-rows:
-220px
-1fr
-220px;
-
-}
-
-.left{
-
-border-right:none;
-
-border-bottom:1px solid #333;
-
-}
-
-.right{
-
-border-left:none;
-
-border-top:1px solid #333;
-
-}
-
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Launch — Split Tabs v0.2</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: monospace;
+      height: 100vh;
+      background: #101114;
+      color: #00FF66;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    /* TOP BAR (ZONE A) */
+    header {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid #333;
+      background: #0B0B0C;
+    }
+    .brand {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .launch {
+      display: flex;
+      gap: 8px;
+    }
+    .launch button {
+      padding: 8px 12px;
+      background: #1d1f25;
+      border: 1px solid #444;
+      color: #00FF66;
+      cursor: pointer;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    .launch button:hover { background: #252830; }
+    
+    /* TAB BAR */
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 1px solid #333;
+      background: #121212;
+    }
+    .tab {
+      padding: 12px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      border-right: 1px solid #222;
+      color: #457B9D;
+    }
+    .tab.active {
+      background: #20242d;
+      color: #00FF66;
+      border-bottom: 2px solid #00FF66;
+    }
+
+    /* WORKSPACE BODY (ZONE B) */
+    .workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      overflow: hidden;
+    }
+    .panel {
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .left { border-right: 1px solid #333; background: #0B0B0C; }
+    .main { background: #15171d; }
+    .right { border-left: 1px solid #333; background: #0B0B0C; }
+
+    /* METADATA CARDS */
+    .card {
+      padding: 12px;
+      border: 1px solid #333;
+      background: #181a20;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card label {
+      font-size: 11px;
+      color: #457B9D;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      background: #101114;
+      border: 1px dashed #333;
+      color: #ddd;
+      padding: 8px;
+      font-family: monospace;
+      resize: vertical;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #00FF66;
+      color: #00FF66;
+    }
+
+    /* MATRIX GRID CONTROLLERS (I. II. III. SCHEMA) */
+    .matrix-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 5px;
+    }
+    .matrix-item {
+      background: #101114;
+      border: 1px solid #444;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .matrix-item:hover {
+      border-color: #00FF66;
+      background: #1d1f25;
+    }
+    .matrix-item svg {
+      width: 18px;
+      height: 18px;
+      fill: #00FF66;
+    }
+
+    /* SYSTEM FOOTER (ZONE C) */
+    footer {
+      height: 36px;
+      background: #0B0B0C;
+      border-top: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 11px;
+      color: #457B9D;
+    }
+
+    /* CORNER MODAL CONTAINER */
+    .corner-modal {
+      position: fixed;
+      bottom: 45px;
+      right: 16px;
+      width: 300px;
+      background: #121214;
+      border: 2px solid #E63946;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      display: none;
+      z-index: 1000;
+      font-size: 12px;
+    }
+    .modal-header {
+      background: #E63946;
+      color: #000;
+      padding: 6px 10px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 10px;
+      color: #ddd;
+    }
+
+    .corner-trigger {
+      cursor: pointer;
+      background: #20242d;
+      border: 1px solid #333;
+      padding: 2px 6px;
+      color: #E63946;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
-
-<div class="brand">
-
-⚡ quick launch
-
-</div>
-
-<div class="launch">
-
-<button>new</button>
-
-<button>split</button>
-
-<button>save</button>
-
-</div>
-
-</header>
-
-
-<div class="tabs">
-
-<div class="tab active">
-
-tab-a
-
-</div>
-
-<div class="tab">
-
-tab-b
-
-</div>
-
-<div class="tab">
-
-tab-c
-
-</div>
-
-<div class="tab">
-
-tab-d
-
-</div>
-
-</div>
-
-
-<div class="workspace">
-
-<!-- LEFT -->
-
-<aside class="panel left">
-
-<div class="card">
-
-A
-navigation
-
-</div>
-
-<div class="card">
-
-B
-quick notes
-
-</div>
-
-<div class="card">
-
-C
-recent
-
-</div>
-
-</aside>
-
-
-<!-- MAIN -->
-
-<main class="panel main">
-
-<div class="card">
-
-workspace
-
-</div>
-
-<div class="card">
-
-drag content
-
-</div>
-
-<div class="card">
-
-split preview
-
-</div>
-
-</main>
-
-
-<!-- RIGHT -->
-
-<aside class="panel right">
-
-<div class="card">
-
-tools
-
-</div>
-
-<div class="card">
-
-launch actions
-
-</div>
-
-<div class="card">
-
-status
-
-</div>
-
-</aside>
-
-</div>
-
-</body>
-
-</html>
-```
+  <header>
+    <div class="brand">
+      <span>⚡ QUICK LAUNCH WORKBENCH</span>
+      <span class="corner-trigger" id="modal-open-btn">[i] SCHEMA PROFILE</span>
+    </div>
+    <div class="launch">
+      <button id="clear-btn">FLUSH</button>
+      <button id="save-btn" style="background: #00FF66; color: #000;">SAVE STATES</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-sheet="ALPHA">ALPHA</div>
+    <div class="tab" data-sheet="BETA">BETA</div>
+    <div class="tab" data-sheet="GAMMA">GAMMA</div>
+    <div class="tab" data-sheet="DELTA">DELTA</div>
+    <div class="tab" data-sheet="NU">NU</div>
+    <div class="tab" data-sheet="OMEGA">OMEGA</div>
+    <div class="tab" data-sheet="THETA">THETA</div>
+    <div class="tab" data-sheet="SIGMA">SIGMA</div>
+    <div class="tab" data-sheet="PSI">PSI</div>
+    <div class="tab" data-sheet="ZETA">ZETA</div>
+  </div>
+
+  <div class="workspace">
+    
+    <aside class="panel left">
+      <div class="card">
+        <label>ALPHA_ZONE_B_NAV</label>
+        <textarea id="nav-input" placeholder="A100 - Matrix Navigation Parameters..."></textarea>
+      </div>
+      <div class="card">
+        <label>BETA_ZONE_B_SCRATCH</label>
+        <textarea id="scratch-input" placeholder="B200 - Raw Buffer Log..."></textarea>
+      </div>
+    </aside>
+
+    <main class="panel main">
+      <div class="card" style="flex: 1; border-color: #00FF66;">
+        <label id="workspace-title" style="color: #00FF66;">ALPHA_ZONE_B_CORE</label>
+        <textarea id="main-canvas-input" style="flex:1; min-height: 250px;" placeholder="Core active data matrix execution canvas..."></textarea>
+      </div>
+    </main>
+
+    <aside class="panel right">
+      <div class="card">
+        <label>SCHEMA I. II. III. MODULE SYSTEM</label>
+        
+        <div class="matrix-container">
+          <div class="matrix-item" data-instance="i1">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>i 1</span>
+          </div>
+          <div class="matrix-item" data-instance="i2">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>i 2</span>
+          </div>
+          <div class="matrix-item" data-instance="i3">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>i 3</span>
+          </div>
+          <div class="matrix-item" data-instance="i4">
+            <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>i 4</span>
+          </div>
+          <div class="matrix-item" data-instance="i5">
+            <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>i 5</span>
+          </div>
+          <div class="matrix-item" data-instance="i6">
+            <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>i 6</span>
+          </div>
+          <div class="matrix-item" data-instance="i7">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0
