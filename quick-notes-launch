@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Quick Launch — Split Tabs</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+
+font-family:system-ui;
+
+height:100vh;
+
+background:#101114;
+
+color:#ddd;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+/* TOP BAR */
+
+header{
+
+height:56px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 16px;
+
+border-bottom:1px solid #333;
+
+}
+
+.brand{
+
+font-weight:700;
+
+}
+
+.launch{
+
+display:flex;
+
+gap:8px;
+
+}
+
+.launch button{
+
+padding:8px 12px;
+
+background:#1d1f25;
+
+border:1px solid #444;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+/* TAB BAR */
+
+.tabs{
+
+display:flex;
+
+overflow:auto;
+
+border-bottom:1px solid #333;
+
+}
+
+.tab{
+
+padding:12px;
+
+cursor:pointer;
+
+white-space:nowrap;
+
+border-right:1px solid #222;
+
+}
+
+.tab.active{
+
+background:#20242d;
+
+}
+
+/* SPLIT */
+
+.workspace{
+
+flex:1;
+
+display:grid;
+
+grid-template-columns:
+260px
+1fr
+320px;
+
+overflow:hidden;
+
+}
+
+/* PANELS */
+
+.panel{
+
+overflow:auto;
+
+padding:16px;
+
+}
+
+.left{
+
+border-right:1px solid #333;
+
+}
+
+.main{
+
+background:#15171d;
+
+}
+
+.right{
+
+border-left:1px solid #333;
+
+}
+
+/* CARD */
+
+.card{
+
+padding:12px;
+
+margin-bottom:12px;
+
+border:1px solid #333;
+
+background:#181a20;
+
+}
+
+/* MOBILE */
+
+@media (max-width:900px){
+
+.workspace{
+
+grid-template-columns:
+1fr;
+
+grid-template-rows:
+220px
+1fr
+220px;
+
+}
+
+.left{
+
+border-right:none;
+
+border-bottom:1px solid #333;
+
+}
+
+.right{
+
+border-left:none;
+
+border-top:1px solid #333;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">
+
+⚡ quick launch
+
+</div>
+
+<div class="launch">
+
+<button>new</button>
+
+<button>split</button>
+
+<button>save</button>
+
+</div>
+
+</header>
+
+
+<div class="tabs">
+
+<div class="tab active">
+
+tab-a
+
+</div>
+
+<div class="tab">
+
+tab-b
+
+</div>
+
+<div class="tab">
+
+tab-c
+
+</div>
+
+<div class="tab">
+
+tab-d
+
+</div>
+
+</div>
+
+
+<div class="workspace">
+
+<!-- LEFT -->
+
+<aside class="panel left">
+
+<div class="card">
+
+A
+navigation
+
+</div>
+
+<div class="card">
+
+B
+quick notes
+
+</div>
+
+<div class="card">
+
+C
+recent
+
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="panel main">
+
+<div class="card">
+
+workspace
+
+</div>
+
+<div class="card">
+
+drag content
+
+</div>
+
+<div class="card">
+
+split preview
+
+</div>
+
+</main>
+
+
+<!-- RIGHT -->
+
+<aside class="panel right">
+
+<div class="card">
+
+tools
+
+</div>
+
+<div class="card">
+
+launch actions
+
+</div>
+
+<div class="card">
+
+status
+
+</div>
+
+</aside>
+
+</div>
+
+</body>
+
+</html>
+```
