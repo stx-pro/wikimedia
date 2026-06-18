@@ -146,6 +146,10 @@
       width: 18px;
       height: 18px;
       fill: #00FF66;
+      pointer-events: none;
+    }
+    .matrix-item span {
+      pointer-events: none;
     }
 
     /* SYSTEM FOOTER (ZONE C) */
@@ -187,7 +191,6 @@
       padding: 10px;
       color: #ddd;
     }
-
     .corner-trigger {
       cursor: pointer;
       background: #20242d;
@@ -202,25 +205,25 @@
   <header>
     <div class="brand">
       <span>⚡ QUICK LAUNCH WORKBENCH</span>
-      <span class="corner-trigger" id="modal-open-btn">[i] SCHEMA PROFILE</span>
+      <span class="corner-trigger" onclick="toggleModal(true)">[i] SCHEMA PROFILE</span>
     </div>
     <div class="launch">
-      <button id="clear-btn">FLUSH</button>
-      <button id="save-btn" style="background: #00FF66; color: #000;">SAVE STATES</button>
+      <button onclick="flushActiveSheet()">FLUSH</button>
+      <button onclick="saveActiveSheetContext()" style="background: #00FF66; color: #000;">SAVE STATES</button>
     </div>
   </header>
 
   <div class="tabs">
-    <div class="tab active" data-sheet="ALPHA">ALPHA</div>
-    <div class="tab" data-sheet="BETA">BETA</div>
-    <div class="tab" data-sheet="GAMMA">GAMMA</div>
-    <div class="tab" data-sheet="DELTA">DELTA</div>
-    <div class="tab" data-sheet="NU">NU</div>
-    <div class="tab" data-sheet="OMEGA">OMEGA</div>
-    <div class="tab" data-sheet="THETA">THETA</div>
-    <div class="tab" data-sheet="SIGMA">SIGMA</div>
-    <div class="tab" data-sheet="PSI">PSI</div>
-    <div class="tab" data-sheet="ZETA">ZETA</div>
+    <div class="tab active" data-sheet="ALPHA" onclick="switchTab(this)">ALPHA</div>
+    <div class="tab" data-sheet="BETA" onclick="switchTab(this)">BETA</div>
+    <div class="tab" data-sheet="GAMMA" onclick="switchTab(this)">GAMMA</div>
+    <div class="tab" data-sheet="DELTA" onclick="switchTab(this)">DELTA</div>
+    <div class="tab" data-sheet="NU" onclick="switchTab(this)">NU</div>
+    <div class="tab" data-sheet="OMEGA" onclick="switchTab(this)">OMEGA</div>
+    <div class="tab" data-sheet="THETA" onclick="switchTab(this)">THETA</div>
+    <div class="tab" data-sheet="SIGMA" onclick="switchTab(this)">SIGMA</div>
+    <div class="tab" data-sheet="PSI" onclick="switchTab(this)">PSI</div>
+    <div class="tab" data-sheet="ZETA" onclick="switchTab(this)">ZETA</div>
   </div>
 
   <div class="workspace">
@@ -248,29 +251,149 @@
         <label>SCHEMA I. II. III. MODULE SYSTEM</label>
         
         <div class="matrix-container">
-          <div class="matrix-item" data-instance="i1">
+          <div class="matrix-item" onclick="triggerInstance('i1')">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             <span>i 1</span>
           </div>
-          <div class="matrix-item" data-instance="i2">
+          <div class="matrix-item" onclick="triggerInstance('i2')">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             <span>i 2</span>
           </div>
-          <div class="matrix-item" data-instance="i3">
+          <div class="matrix-item" onclick="triggerInstance('i3')">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1.9-2 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
             <span>i 3</span>
           </div>
-          <div class="matrix-item" data-instance="i4">
+          <div class="matrix-item" onclick="triggerInstance('i4')">
             <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
             <span>i 4</span>
           </div>
-          <div class="matrix-item" data-instance="i5">
+          <div class="matrix-item" onclick="triggerInstance('i5')">
             <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
             <span>i 5</span>
           </div>
-          <div class="matrix-item" data-instance="i6">
+          <div class="matrix-item" onclick="triggerInstance('i6')">
             <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
             <span>i 6</span>
           </div>
-          <div class="matrix-item" data-instance="i7">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0
+          <div class="matrix-item" onclick="triggerInstance('i7')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>i 7</span>
+          </div>
+          <div class="matrix-item" onclick="triggerInstance('i8')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>i 8</span>
+          </div>
+          <div class="matrix-item" onclick="triggerInstance('i9')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>i 9</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card" style="border-color: #E63946;">
+        <label>TELEMETRY TRACE LOG</label>
+        <div id="status-field" style="font-size:12px; color: #E9C46A;">System Idle. Ready for TSV schema updates.</div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div id="footer-tsv-signature">DOM_SPACE_TSV :: ACTIVE_NODE=ALPHA</div>
+    <div>ZONE C // RUNTIME CACHE LAYER ACTIVE</div>
+  </footer>
+
+  <div class="corner-modal" id="info-modal">
+    <div class="modal-header">
+      <span>[i] INTERTWINED SCHEMA DIAGNOSTIC</span>
+      <span style="cursor:pointer;" onclick="toggleModal(false)">×</span>
+    </div>
+    <div class="modal-body">
+      <p style="font-weight:bold; margin-bottom: 5px; color:#00FF66;">Active Structural Registry Map:</p>
+      <div style="font-size:11px; line-height: 1.4;">
+        • Schema I: Instances i1 - i3 [Data Entries]<br>
+        • Schema II: Instances i4 - i6 [Layout Frameworks]<br>
+        • Schema III: Instances i7 - i9 [Operational Gateways]
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Elements Cache Global Reference Handles
+    let navInput, scratchInput, mainCanvas, statusField, tsvSignature, workspaceTitle, infoModal;
+    const STORAGE_KEY_PREFIX = 'stx_tsv_sheet_';
+    let currentActiveSheet = 'ALPHA';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      navInput = document.getElementById('nav-input');
+      scratchInput = document.getElementById('scratch-input');
+      mainCanvas = document.getElementById('main-canvas-input');
+      statusField = document.getElementById('status-field');
+      tsvSignature = document.getElementById('footer-tsv-signature');
+      workspaceTitle = document.getElementById('workspace-title');
+      infoModal = document.getElementById('info-modal');
+
+      loadSheetContext('ALPHA');
+    });
+
+    function toggleModal(show) {
+      if(infoModal) infoModal.style.display = show ? 'block' : 'none';
+    }
+
+    function saveActiveSheetContext() {
+      if(!navInput) return;
+      const payload = {
+        nav: navInput.value,
+        scratch: scratchInput.value,
+        canvas: mainCanvas.value,
+        updatedAt: Date.now()
+      };
+      localStorage.setItem(STORAGE_KEY_PREFIX + currentActiveSheet, JSON.stringify(payload));
+      if(statusField) statusField.textContent = `Saved [${currentActiveSheet}] state vector cache. 💾`;
+    }
+
+    function loadSheetContext(sheetName) {
+      currentActiveSheet = sheetName;
+      if(workspaceTitle) workspaceTitle.textContent = `${sheetName}_ZONE_B_CORE`;
+      if(tsvSignature) tsvSignature.textContent = `DOM_SPACE_TSV :: ACTIVE_NODE=${sheetName}`;
+      
+      const cached = localStorage.getItem(STORAGE_KEY_PREFIX + sheetName);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if(navInput) navInput.value = parsed.nav || '';
+        if(scratchInput) scratchInput.value = parsed.scratch || '';
+        if(mainCanvas) mainCanvas.value = parsed.canvas || '';
+        if(statusField) statusField.textContent = `Hydrated worksheet nodes for [${sheetName}]. ✅`;
+      } else {
+        if(navInput) navInput.value = '';
+        if(scratchInput) scratchInput.value = '';
+        if(mainCanvas) mainCanvas.value = '';
+        if(statusField) statusField.textContent = `Initialized clean workspace buffer for [${sheetName}].`;
+      }
+    }
+
+    function triggerInstance(instanceId) {
+      if(!mainCanvas) return;
+      mainCanvas.value += `\n[TRIGGERED_MODULE_INSTANCE_${instanceId.toUpperCase()}] :: Target validation stream bound to active workspace.`;
+      if(statusField) statusField.textContent = `Appended context parameters for instance token: ${instanceId}`;
+      saveActiveSheetContext();
+    }
+
+    function switchTab(element) {
+      saveActiveSheetContext();
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+      loadSheetContext(element.getAttribute('data-sheet'));
+    }
+
+    function flushActiveSheet() {
+      if(confirm(`Flush memory for current schema sheet: ${currentActiveSheet}?`)) {
+        if(navInput) navInput.value = '';
+        if(scratchInput) scratchInput.value = '';
+        if(mainCanvas) mainCanvas.value = '';
+        localStorage.removeItem(STORAGE_KEY_PREFIX + currentActiveSheet);
+        if(statusField) statusField.textContent = `Buffer wiped cleanly for sheet node [${currentActiveSheet}].`;
+      }
+    }
+  </script>
+</body>
+</html>
